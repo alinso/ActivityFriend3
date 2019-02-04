@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "800428393840",
+    "firebase_url": "https://activity-friend-e1c24.firebaseio.com",
+    "project_id": "activity-friend-e1c24",
+    "storage_bucket": "activity-friend-e1c24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800428393840:android:7da1176f84040c42",
+        "android_client_info": {
+          "package_name": "com.alinso.activity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800428393840-oldakgc9r90r736eh89mu86gc5saqmqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA7KJQy_03gBuB5qeIKE4cHtZmW2tsOgI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
