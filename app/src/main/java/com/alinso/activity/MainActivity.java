@@ -6,14 +6,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,26 +33,23 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
 
+    private WebView wv1;
     private ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> uploadMessage;
     public static final int REQUEST_SELECT_FILE = 100;
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent)
-    {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            if (requestCode == REQUEST_SELECT_FILE)
-            {
-                if (uploadMessage == null)
-                    return;
-                uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
-                uploadMessage = null;
-            }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        if (requestCode == REQUEST_SELECT_FILE) {
+            if (uploadMessage == null)
+                return;
+            uploadMessage.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+            uploadMessage = null;
         }
-        else if (requestCode == FILECHOOSER_RESULTCODE)
-        {
+
+        if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == mUploadMessage)
                 return;
             // Use MainActivity.RESULT_OK if you're implementing WebView inside Fragment
@@ -61,22 +58,21 @@ public class MainActivity extends AppCompatActivity {
             mUploadMessage.onReceiveValue(result);
             mUploadMessage = null;
         }
-       // else
-         //   Toast.makeText(getActivity().getApplicationContext(), "Failed to Upload Image", Toast.LENGTH_LONG).show();
+        // else
+        //   Toast.makeText(getActivity().getApplicationContext(), "Failed to Upload Image", Toast.LENGTH_LONG).show();
     }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        WebView wv1 = (WebView) findViewById(R.id.webview);
+       wv1 = (WebView) findViewById(R.id.webview);
 
         wv1.setWebChromeClient(new MyChromeClient());
         wv1.setWebViewClient(new MyBrowser());
-      //  wv1.clearCache(true);
+        //  wv1.clearCache(true);
         wv1.getSettings().setJavaScriptEnabled(true);
         wv1.getSettings().setDomStorageEnabled(true);
         wv1.getSettings().setDatabaseEnabled(true);
@@ -84,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
         wv1.getSettings().setUseWideViewPort(true);
         wv1.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         wv1.loadUrl("https://www.activityfriend.net");
-
-
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
 
     }
 
-    private class MyChromeClient extends WebChromeClient{
+
+    private class MyChromeClient extends WebChromeClient {
 
         public void onConsoleMessage(String message, int lineNumber, String sourceID) {
             Log.d("MyApplication", message);
@@ -100,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        protected void openFileChooser(ValueCallback uploadMsg, String acceptType)
-        {
+        protected void openFileChooser(ValueCallback uploadMsg, String acceptType) {
             mUploadMessage = uploadMsg;
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -111,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // For Lollipop 5.0+ Devices
-        public boolean onShowFileChooser(WebView mWebView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams)
-        {
+        public boolean onShowFileChooser(WebView mWebView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
             if (uploadMessage != null) {
                 uploadMessage.onReceiveValue(null);
                 uploadMessage = null;
@@ -121,11 +114,9 @@ public class MainActivity extends AppCompatActivity {
             uploadMessage = filePathCallback;
 
             Intent intent = fileChooserParams.createIntent();
-            try
-            {
+            try {
                 startActivityForResult(intent, REQUEST_SELECT_FILE);
-            } catch (ActivityNotFoundException e)
-            {
+            } catch (ActivityNotFoundException e) {
                 uploadMessage = null;
                 //Toast.makeText(this.getApplicationContext(), "Cannot Open File Chooser", Toast.LENGTH_LONG).show();
                 return false;
@@ -134,8 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //For Android 4.1 only
-        protected void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture)
-        {
+        protected void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
             mUploadMessage = uploadMsg;
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -143,8 +133,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "File Browser"), FILECHOOSER_RESULTCODE);
         }
 
-        protected void openFileChooser(ValueCallback<Uri> uploadMsg)
-        {
+        protected void openFileChooser(ValueCallback<Uri> uploadMsg) {
             mUploadMessage = uploadMsg;
             Intent i = new Intent(Intent.ACTION_GET_CONTENT);
             i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -161,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                    public void onComplete(Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
                             Log.w("token failed:", "getInstanceId failed", task.getException());
                             return;

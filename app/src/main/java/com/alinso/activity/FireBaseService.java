@@ -1,5 +1,7 @@
 package com.alinso.activity;
 
+import android.content.Intent;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -16,7 +18,6 @@ public class FireBaseService extends FirebaseMessagingService {
         //String objectId = remoteMessage.getData().get(object_id);
         String objectType = remoteMessage.getData().get("objectType");
 
-        System.out.println(title);
 
     }
 }
